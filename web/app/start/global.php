@@ -17,6 +17,7 @@ ClassLoader::addDirectories(array(
 	app_path().'/controllers',
 	app_path().'/models',
 	app_path().'/database/seeds',
+        app_path().'/library',
 
 ));
 
@@ -31,7 +32,7 @@ ClassLoader::addDirectories(array(
 |
 */
 
-$logFile = 'log-'.php_sapi_name().'.txt';
+$logFile = 'log-'.php_sapi_name().'.log';
 
 Log::useDailyFiles(storage_path().'/logs/'.$logFile);
 
@@ -81,3 +82,10 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+Auth::extend('ws', function($app) {
+    $servicio = new \WS\Domain\User\Service\WSUserService();
+    $provider =  new \WS\Auth\WSUserProvider($servicio);
+
+    return new \Illuminate\Auth\Guard($provider, App::make('session'));
+});
