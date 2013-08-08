@@ -31,7 +31,7 @@ class WSUserProvider implements UserProviderInterface {
         /** @var User $user  */
         $user = $this->userService->findUserByUserIdentifier($identifier);
 
-        if (!$user instanceof \Usuario) {
+        if (!$user instanceof \UsuarioWS) {
             return false;
         }
 
@@ -53,7 +53,7 @@ class WSUserProvider implements UserProviderInterface {
         //error_log(print_r($credentials, true));
         $user = $this->userService->findUserByUserName($credentials['id']);
 
-        if (!$user instanceof \Usuario) {
+        if (!$user instanceof \UsuarioWS) {
             return false;
         }
 

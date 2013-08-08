@@ -1,40 +1,16 @@
 <?php
 
-use Illuminate\Auth\UserInterface;
-
+namespace App\Modelo;
 /**
  * Description of Usuario
  *
  * @author Sebastián Salazar Molina <ssalazar@orangepeople.cl>
  */
-class Usuario implements UserInterface {
+class Usuario extends Illuminate\Database\Eloquent {
 
-    private $authIdentifier = null;
-    private $authPassword = null;
-
-    public function getAuthIdentifier() {
-        return $this->authIdentifier;
-    }
-
-    public function setAuthIdentifier($authIdentifier) {
-        $this->authIdentifier = $authIdentifier;
-    }
-
-    public function getAuthPassword() {
-        return $this->authPassword;
-    }
-
-    public function setAuthPassword($authPassword) {
-        $this->authPassword = $authPassword;
-    }
-
-    public function getUserIdentifier() {
-        return $this->authIdentifier;
-    }
-
-    public function getUserName() {
-        return $this->authIdentifier;
-    }
+    protected $table = "usuarios";
+//    protected $fillable = array('pk', 'rut', 'nombre');
+    public static $key = 'pk';
 
 }
 

@@ -12,13 +12,13 @@ use Illuminate\Auth\AuthServiceProvider;
 class WSUserService extends AuthServiceProvider {
 
     public function findUserByUserIdentifier($identificador) {
-        $usuario = new \Usuario();
+        $usuario = new \UsuarioWS();
         $usuario->setAuthIdentifier($identificador);
         return $usuario;
     }
 
     public function findUserByUserName($username) {
-        $usuario = new \Usuario();
+        $usuario = new \UsuarioWS();
         $usuario->setAuthIdentifier($username);
         return $usuario;
     }
@@ -36,8 +36,29 @@ class WSUserService extends AuthServiceProvider {
         $objRespuesta = $objClienteSOAP->autenticar($parametros);
         $codigo = (int) $objRespuesta->return->codigo;
         $descripcion = (string) $objRespuesta->return->descripcion;
+        $nombre = "";
 
         if ($codigo > 0) {
+
+            // Guardo Acceso
+            /*
+              $usuario = \App\Modelo\Usuario::where('rut', '=', $username);
+              if ($usuario == null) {
+              $usuario = new \App\Modelo\Usuario();
+              $usuario->rut = $username;
+              $usuario->nombre = $nombre;
+              $usuario->save();
+              }
+
+              \Symfony\Component\HttpFoundation\Request::trustProxyData();
+              $ip = \Illuminate\Http\Request::ip();
+              $acceso = new \App\Modelo\Acceso();
+              $acceso->ip = $ip;
+              $acceso->usuario = $usuario;
+              $acceso->save();
+             */
+
+
             $resultado = true;
         } else {
             error_log("Servicio WEB respondió: $descripcion ($codigo)");

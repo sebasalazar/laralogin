@@ -30,12 +30,9 @@ class LoginController extends BaseController {
             'password' => 'Required'
         );
 
-        // Validate the inputs.
         $validator = Validator::make($userdata, $rules);
 
-        // Check if the form validates with success.
         if ($validator->passes()) {
-            // remove username, because it was just used for validation
             unset($userdata['rut']);
 
             // Try to log the user in.
