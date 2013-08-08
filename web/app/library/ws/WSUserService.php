@@ -34,9 +34,13 @@ class WSUserService extends AuthServiceProvider {
 
         $objClienteSOAP = new \SoapClient("http://informatica.utem.cl:8011/dirdoc-auth/ws/auth?wsdl", $opciones);
         $objRespuesta = $objClienteSOAP->autenticar($parametros);
+
+        // error_log(print_r($objRespuesta, true));
+
         $codigo = (int) $objRespuesta->return->codigo;
         $descripcion = (string) $objRespuesta->return->descripcion;
-        $nombre = "";
+        $nombre = (string) $objRespuesta->return->nombre;
+
 
         if ($codigo > 0) {
 
@@ -58,6 +62,7 @@ class WSUserService extends AuthServiceProvider {
               $acceso->save();
              */
 
+            error_log("Usuario $nombre autenticado exitosamente");
 
             $resultado = true;
         } else {
