@@ -1,6 +1,6 @@
 <?php
 
-namespace WS\Domain\User\Service\WSUserService;
+namespace WS\Domain\User\Service;
 
 use Illuminate\Auth\AuthServiceProvider;
 
@@ -12,15 +12,15 @@ use Illuminate\Auth\AuthServiceProvider;
 class WSUserService extends AuthServiceProvider {
 
     public function findUserByUserIdentifier($identificador) {
-        $user = new \WS\Domain\User\Entity\User();
-        $user->rut = $identificador;
-        return $user;
+        $usuario = new \Usuario();
+        $usuario->setAuthIdentifier($identificador);
+        return $usuario;
     }
 
     public function findUserByUserName($username) {
-        $user = new \WS\Domain\User\Entity\User();
-        $user->rut = $username;
-        return $user;
+        $usuario = new \Usuario();
+        $usuario->setAuthIdentifier($username);
+        return $usuario;
     }
 
     public function validateUserCredentials($username, $password) {
@@ -32,7 +32,7 @@ class WSUserService extends AuthServiceProvider {
 
         $opciones = array('login' => "isw", 'password' => "8c18f4e50e8e65a6d19e14a9c90437d67bb05e5a");
 
-        $objClienteSOAP = new SoapClient("http://informatica.utem.cl:8011/dirdoc-auth/ws/auth?wsdl", $opciones);
+        $objClienteSOAP = new \SoapClient("http://informatica.utem.cl:8011/dirdoc-auth/ws/auth?wsdl", $opciones);
         $objRespuesta = $objClienteSOAP->autenticar($parametros);
         $codigo = (int) $objRespuesta->return->codigo;
         $descripcion = (string) $objRespuesta->return->descripcion;
@@ -43,7 +43,7 @@ class WSUserService extends AuthServiceProvider {
             error_log("Servicio WEB respondió: $descripcion ($codigo)");
         }
 
-        return $resultado;
+        return (bool) $resultado;
     }
 
 }

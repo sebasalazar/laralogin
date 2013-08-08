@@ -4,8 +4,7 @@ namespace WS\Auth;
 
 use Illuminate\Auth\UserProviderInterface,
     Illuminate\Auth\GenericUser,
-    WS\Domain\User\Service\WSUserService,
-    WS\Domain\User\Entity\WSUser;
+    WS\Domain\User\Service\WSUserService;
 
 /**
  * recordar composer dump-auto
@@ -32,7 +31,7 @@ class WSUserProvider implements UserProviderInterface {
         /** @var User $user  */
         $user = $this->userService->findUserByUserIdentifier($identifier);
 
-        if (!$user instanceof WSUser) {
+        if (!$user instanceof \Usuario) {
             return false;
         }
 
@@ -51,9 +50,10 @@ class WSUserProvider implements UserProviderInterface {
      */
     public function retrieveByCredentials(array $credentials) {
         /** @var User $user  */
-        $user = $this->userService->findUserByUserName($credentials['username']);
+        //error_log(print_r($credentials, true));
+        $user = $this->userService->findUserByUserName($credentials['id']);
 
-        if (!$user instanceof User) {
+        if (!$user instanceof \Usuario) {
             return false;
         }
 
@@ -73,14 +73,14 @@ class WSUserProvider implements UserProviderInterface {
      */
     public function validateCredentials(\Illuminate\Auth\UserInterface $user, array $credentials) {
         $validated = $this->userService->validateUserCredentials(
-                $credentials['username'], $credentials['password']
+                $credentials['id'], $credentials['password']
         );
 
-        $validated = $validated && $user->userName = $credentials['username'];
+        $validated = $validated && $user->userName = $credentials['id'];
 
         return (bool) $validated;
     }
 
 }
-
 ?>
+

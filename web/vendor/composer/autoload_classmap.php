@@ -14,7 +14,8 @@ return array(
     'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
     'TestCase' => $baseDir . '/app/tests/TestCase.php',
     'User' => $baseDir . '/app/models/User.php',
+    'Usuario' => $baseDir . '/app/models/Usuario.php',
     'WS\\Auth\\WSUserProvider' => $baseDir . '/app/library/ws/WSUserProvider.php',
     'WS\\Domain\\User\\Entity\\WSUser\\WSUser' => $baseDir . '/app/library/ws/WSUser.php',
-    'WS\\Domain\\User\\Service\\WSUserService\\WSUserService' => $baseDir . '/app/library/ws/WSUserService.php',
+    'WS\\Domain\\User\\Service\\WSUserService' => $baseDir . '/app/library/ws/WSUserService.php',
 );

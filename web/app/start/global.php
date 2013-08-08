@@ -84,7 +84,7 @@ App::down(function()
 require app_path().'/filters.php';
 
 Auth::extend('ws', function($app) {
-    $servicio = new \WS\Domain\User\Service\WSUserService();
+    $servicio = new \WS\Domain\User\Service\WSUserService($app);
     $provider =  new \WS\Auth\WSUserProvider($servicio);
 
     return new \Illuminate\Auth\Guard($provider, App::make('session'));
