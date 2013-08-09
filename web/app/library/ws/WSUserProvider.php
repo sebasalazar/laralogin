@@ -50,7 +50,6 @@ class WSUserProvider implements UserProviderInterface {
      */
     public function retrieveByCredentials(array $credentials) {
         /** @var User $user  */
-        //error_log(print_r($credentials, true));
         $user = $this->userService->findUserByUserName($credentials['id']);
 
         if (!$user instanceof \UsuarioWS) {

@@ -45,22 +45,19 @@ class WSUserService extends AuthServiceProvider {
         if ($codigo > 0) {
 
             // Guardo Acceso
-            /*
-              $usuario = \App\Modelo\Usuario::where('rut', '=', $username);
-              if ($usuario == null) {
-              $usuario = new \App\Modelo\Usuario();
-              $usuario->rut = $username;
-              $usuario->nombre = $nombre;
-              $usuario->save();
-              }
+            $usuario = \App\Modelo\Usuario::where('rut', '=', $username)->get();
+            if ($usuario == null) {
+                $usuario = new \App\Modelo\Usuario();
+                $usuario->rut = $username;
+                $usuario->nombre = $nombre;
+                $usuario->save();
+            }
 
-              \Symfony\Component\HttpFoundation\Request::trustProxyData();
-              $ip = \Illuminate\Http\Request::ip();
-              $acceso = new \App\Modelo\Acceso();
-              $acceso->ip = $ip;
-              $acceso->usuario = $usuario;
-              $acceso->save();
-             */
+            $ip = \Request::getClientIp();
+            $acceso = new \App\Modelo\Acceso();
+            $acceso->ip = $ip;
+            $acceso->usuario = $usuario;
+            $acceso->save();
 
             error_log("Usuario $nombre autenticado exitosamente");
 

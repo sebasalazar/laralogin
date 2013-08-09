@@ -70,7 +70,7 @@ return array(
 			'username' => 'laravel',
 			'password' => 'laravel',
 			'charset'  => 'utf8',
-			'prefix'   => 'lrv_',
+			'prefix'   => '',
 			'schema'   => 'laravel',
 		),
 

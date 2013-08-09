@@ -6,7 +6,7 @@ namespace App\Modelo;
  *
  * @author Sebastián Salazar Molina <ssalazar@orangepeople.cl>
  */
-class Usuario extends Illuminate\Database\Eloquent {
+class Usuario extends \Eloquent {
 
     protected $table = "usuarios";
 //    protected $fillable = array('pk', 'rut', 'nombre');

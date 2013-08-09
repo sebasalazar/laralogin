@@ -7,10 +7,11 @@ namespace App\Modelo;
  *
  * @author Sebastián Salazar Molina <ssalazar@orangepeople.cl>
  */
-class Acceso extends Illuminate\Database\Eloquent {
+class Acceso extends \Eloquent {
 
     protected $table = "accesos";
 //    protected $fillable = array('pk', 'usuario_fk', 'fecha', 'ip');
+    protected $guarded = array('fecha');
     public static $key = 'pk';
 
     
