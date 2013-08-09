@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+{{ HTML::link('logout', 'Logout') }}
+
 @section('contenido')
 
 <h1>Bienvenido</h1>
