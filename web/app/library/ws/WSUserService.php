@@ -35,8 +35,6 @@ class WSUserService extends AuthServiceProvider {
         $objClienteSOAP = new \SoapClient("http://informatica.utem.cl:8011/dirdoc-auth/ws/auth?wsdl", $opciones);
         $objRespuesta = $objClienteSOAP->autenticar($parametros);
 
-        // error_log(print_r($objRespuesta, true));
-
         $codigo = (int) $objRespuesta->return->codigo;
         $descripcion = (string) $objRespuesta->return->descripcion;
         $nombre = (string) $objRespuesta->return->nombre;
@@ -45,25 +43,28 @@ class WSUserService extends AuthServiceProvider {
         if ($codigo > 0) {
 
             // Guardo Acceso
-            $usuario = \App\Modelo\Usuario::where('rut', '=', $username)->get();
-            if ($usuario == null) {
+            $usuario = \App\Modelo\Usuario::where('rut', '=', $username)->first();
+            if (!($usuario instanceof \App\Modelo\Usuario)) {
+                \Log::warning("Usuario no encontrado -> se creará uno");
                 $usuario = new \App\Modelo\Usuario();
                 $usuario->rut = $username;
                 $usuario->nombre = $nombre;
                 $usuario->save();
+            } else {
+                \Log::info("Usuario encontrado: {$usuario->nombre}");
             }
 
             $ip = \Request::getClientIp();
             $acceso = new \App\Modelo\Acceso();
             $acceso->ip = $ip;
-            $acceso->usuario = $usuario;
+            $acceso->usuario_fk = $usuario->pk;
             $acceso->save();
 
-            error_log("Usuario $nombre autenticado exitosamente");
+            \Log::info("Usuario $nombre autenticado exitosamente");
 
             $resultado = true;
         } else {
-            error_log("Servicio WEB respondió: $descripcion ($codigo)");
+            \Log::error("Servicio WEB respondió: $descripcion ($codigo)");
         }
 
         return (bool) $resultado;

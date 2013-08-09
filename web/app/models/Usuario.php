@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Modelo;
+
 /**
  * Description of Usuario
  *
@@ -9,8 +10,8 @@ namespace App\Modelo;
 class Usuario extends \Eloquent {
 
     protected $table = "usuarios";
-//    protected $fillable = array('pk', 'rut', 'nombre');
-    public static $key = 'pk';
+    public $primaryKey = 'pk';
+    public $timestamps = false;
 
 }
 

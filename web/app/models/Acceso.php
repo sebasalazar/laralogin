@@ -10,14 +10,14 @@ namespace App\Modelo;
 class Acceso extends \Eloquent {
 
     protected $table = "accesos";
-//    protected $fillable = array('pk', 'usuario_fk', 'fecha', 'ip');
     protected $guarded = array('fecha');
-    public static $key = 'pk';
+    public $primaryKey = 'pk';
+    public $timestamps = false;
 
-    
     public function usuario() {
-        return $this->belongsTo('Usuario');
+        return $this->hasOne('Usuario', 'usuario_fk');
     }
+
 }
 
 ?>
