@@ -41,12 +41,12 @@ class LoginController extends BaseController {
                 return Redirect::to('home')->with('exito', 'Logueado exitosamente');
             } else {
                 // Redirect to the login page.
-                return Redirect::to('login')->withErrors(array('password' => 'Password inválida'))->withInput(Input::except('password'));
+                return Redirect::to('login')->with('login_errors', true)->withErrors(array('password' => 'Password inválida'))->withInput(Input::except('password'));
             }
         }
 
         // Something went wrong.
-        return Redirect::to('login')->withErrors($validator)->withInput(Input::except('password'));
+        return Redirect::to('login')->with('login_errors', true)->withErrors($validator)->withInput(Input::except('password'));
     }
 
     public function getLogout() {

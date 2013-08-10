@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Modelo\\Acceso' => $baseDir . '/app/models/Acceso.php',
     'App\\Modelo\\Usuario' => $baseDir . '/app/models/Usuario.php',
+    'App\\RutUtils' => $baseDir . '/app/library/RutUtils.php',
     'BaseController' => $baseDir . '/app/controllers/BaseController.php',
     'CreateAccesosTable' => $baseDir . '/app/database/migrations/2013_08_08_113600_create_accesos_table.php',
     'CreateUsuariosTable' => $baseDir . '/app/database/migrations/2013_08_08_113600_create_usuarios_table.php',

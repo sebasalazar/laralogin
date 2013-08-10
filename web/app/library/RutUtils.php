@@ -7,10 +7,22 @@ namespace App;
  *
  * @author Sebastián Salazar Molina <ssalazar@orangepeople.cl>
  */
-class Utils {
+class RutUtils {
 
     public static function rut($rut_str) {
-        
+        $r = str_replace(array('.', ',', '-'), "", strtoupper($rut_str));
+        $rut = (int) substr($r, 0, strlen($r) - 1);
+        return $rut;
+    }
+
+    public static function dv($rut) {
+        $rut = str_replace(".", "", "$rut");
+        $r = (int) $rut;
+        $s = 1;
+        for ($m = 0; $r != 0; $r/=10) {
+            $s = ($s + $r % 10 * (9 - $m++ % 6)) % 11;
+        }
+        return strtoupper(chr($s ? $s + 47 : 75));
     }
 
     public static function isRut($r) {
@@ -46,6 +58,11 @@ class Utils {
         }
 
         return (bool) $resultado;
+    }
+
+    public static function formatear($rut) {
+        $nuevo_rut = number_format($rut, 0, ",", ".") . "-" . RutUtils::dv($rut);
+        return $nuevo_rut;
     }
 
 }

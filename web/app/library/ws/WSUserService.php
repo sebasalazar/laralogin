@@ -43,11 +43,12 @@ class WSUserService extends AuthServiceProvider {
         if ($codigo > 0) {
 
             // Guardo Acceso
-            $usuario = \App\Modelo\Usuario::where('rut', '=', $username)->first();
+            $rut = \App\RutUtils::rut($username);
+            $usuario = \App\Modelo\Usuario::where('rut', '=', $rut)->first();
             if (!($usuario instanceof \App\Modelo\Usuario)) {
                 \Log::warning("Usuario no encontrado -> se creará uno");
                 $usuario = new \App\Modelo\Usuario();
-                $usuario->rut = $username;
+                $usuario->rut = $rut;
                 $usuario->nombre = $nombre;
                 $usuario->save();
             } else {
