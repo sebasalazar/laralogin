@@ -8,7 +8,11 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Modelo\\Acceso' => $baseDir . '/app/models/Acceso.php',
     'App\\Modelo\\Usuario' => $baseDir . '/app/models/Usuario.php',
+<<<<<<< HEAD
     'App\\RutUtils' => $baseDir . '/app/lib/RutUtils.php',
+=======
+    'App\\RutUtils' => $baseDir . '/app/library/RutUtils.php',
+>>>>>>> 1c41c29168e9c7ceec2d735a6a8cb6dfa2ab0a11
     'BaseController' => $baseDir . '/app/controllers/BaseController.php',
     'DatabaseSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',
     'HomeController' => $baseDir . '/app/controllers/HomeController.php',

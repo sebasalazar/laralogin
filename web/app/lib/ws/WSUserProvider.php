@@ -35,10 +35,10 @@ class WSUserProvider implements UserProviderInterface {
             return false;
         }
 
-        return new GenericUser([
+        return new GenericUser(array(
             'id' => $user->getUserIdentifier(),
             'username' => $user->getUserName()
-        ]);
+        ));
     }
 
     /**
@@ -56,10 +56,10 @@ class WSUserProvider implements UserProviderInterface {
             return false;
         }
 
-        return new GenericUser([
+	return new GenericUser(array(
             'id' => $user->getUserIdentifier(),
             'username' => $user->getUserName()
-        ]);
+        ));
     }
 
     /**

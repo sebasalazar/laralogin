@@ -15,7 +15,20 @@ class HomeController extends BaseController {
      */
 
     public function showWelcome() {
-        return View::make('home');
+        // Obtendremos todos los datos de consulta, se mostrarán en una tabla sencilla
+        $data = DB::table('usuarios')
+                ->join('accesos', 'usuarios.pk', '=', 'accesos.usuario_fk')
+                ->select('usuarios.nombre', 'usuarios.rut', 'accesos.fecha', 'accesos.ip')
+                ->get();
+
+        // Contamos Agrupados
+        $grupo = DB::table('usuarios')
+                ->join('accesos', 'usuarios.pk', '=', 'accesos.usuario_fk')
+                ->select(DB::raw('usuarios.nombre, count(*) as total'))
+                ->groupBy('usuarios.nombre')
+                ->get();
+
+        return View::make('home')->with('data', $data)->with('grupo', $grupo);
     }
 
 }

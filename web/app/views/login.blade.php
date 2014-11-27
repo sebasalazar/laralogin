@@ -10,7 +10,7 @@
 <span class="error">Usuario o contraseña incorrectas.</span>
 @endif
 
-<p>{{ Form::label('rut', 'Username') }}</p>
+<p>{{ Form::label('rut', 'Rut') }}</p>
 <p>{{ Form::text('rut') }}</p>
 
 <p>{{ Form::label('password', 'Password') }}</p>
@@ -19,5 +19,11 @@
 <p>{{ Form::submit('Login') }}</p>
 
 {{ Form::close() }}
+
+<script type="text/javascript">
+    jQuery(document).ready(function($) {
+        $("#rut").Rut();
+    });
+</script>
 
 @stop
