@@ -19,9 +19,9 @@
 
 Route::get('/', 'LoginController@showLogin');
 
-
 Route::get('login', 'LoginController@showLogin');
 Route::post('login', 'LoginController@postLogin');
+
 Route::get('logout', 'LoginController@getLogout');
 
 
