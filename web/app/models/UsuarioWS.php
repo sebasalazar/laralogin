@@ -36,6 +36,18 @@ class UsuarioWS implements UserInterface {
         return $this->authIdentifier;
     }
 
+    public function getRememberToken() {
+        
+    }
+
+    public function getRememberTokenName() {
+        
+    }
+
+    public function setRememberToken($value) {
+        
+    }
+
 }
 
 ?>

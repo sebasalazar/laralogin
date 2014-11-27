@@ -11,22 +11,22 @@
   |
  */
 
-/*
-  Route::get('/', function() {
-  return View::make('hello');
-  });
- */
+//
+//Route::get('/', function()
+//{
+//	return View::make('hello');
+//});
 
 Route::get('/', 'LoginController@showLogin');
 
+
 Route::get('login', 'LoginController@showLogin');
-
 Route::post('login', 'LoginController@postLogin');
-
 Route::get('logout', 'LoginController@getLogout');
 
-Route::group(array('before' => 'auth'), function() {
-            Route::get('home', 'HomeController@showWelcome');
 
-            Route::post('home', 'HomeController@showWelcome');
-        });
+Route::group(array('before' => 'auth'), function() {
+    Route::get('home', 'HomeController@showWelcome');
+
+    Route::post('home', 'HomeController@showWelcome');
+});

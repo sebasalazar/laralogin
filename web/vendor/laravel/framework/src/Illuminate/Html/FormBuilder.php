@@ -1,10 +1,12 @@
 <?php namespace Illuminate\Html;
 
 use Illuminate\Routing\UrlGenerator;
-use Illuminate\Html\HtmlBuilder as Html;
 use Illuminate\Session\Store as Session;
+use Illuminate\Support\Traits\MacroableTrait;
 
 class FormBuilder {
+
+	use MacroableTrait;
 
 	/**
 	 * The HTML builder instance.
@@ -47,13 +49,6 @@ class FormBuilder {
 	 * @var array
 	 */
 	protected $labels = array();
-
-	/**
-	 * The registered form builder macros.
-	 *
-	 * @var array
-	 */
-	protected $macros = array();
 
 	/**
 	 * The reserved form open attributes.
@@ -115,7 +110,7 @@ class FormBuilder {
 		// different method than it actually is, for convenience from the forms.
 		$append = $this->getAppendage($method);
 
-		if (isset($options['files']) and $options['files'])
+		if (isset($options['files']) && $options['files'])
 		{
 			$options['enctype'] = 'multipart/form-data';
 		}
@@ -149,6 +144,17 @@ class FormBuilder {
 		$this->model = $model;
 
 		return $this->open($options);
+	}
+
+	/**
+	 * Set the model instance on the form builder.
+	 *
+	 * @param  mixed  $model
+	 * @return void
+	 */
+	public function setModel($model)
+	{
+		$this->model = $model;
 	}
 
 	/**
@@ -229,7 +235,7 @@ class FormBuilder {
 			$value = $this->getValueAttribute($name, $value);
 		}
 
-		// Once we have the type, value, and ID we can marge them into the rest of the
+		// Once we have the type, value, and ID we can merge them into the rest of the
 		// attributes array so we can convert them into their HTML attribute format
 		// when creating the HTML element. Then, we will return the entire input.
 		$merge = compact('type', 'value', 'id');
@@ -288,6 +294,19 @@ class FormBuilder {
 	public function email($name, $value = null, $options = array())
 	{
 		return $this->input('email', $name, $value, $options);
+	}
+
+	/**
+	 * Create a url input field.
+	 *
+	 * @param  string  $name
+	 * @param  string  $value
+	 * @param  array   $options
+	 * @return string
+	 */
+	public function url($name, $value = null, $options = array())
+	{
+		return $this->input('url', $name, $value, $options);
 	}
 
 	/**
@@ -370,6 +389,18 @@ class FormBuilder {
 	}
 
 	/**
+	 * Create a number input field.
+	 *
+	 * @param  string  $name
+	 * @param  array   $options
+	 * @return string
+	 */
+	public function number($name, $value = null, $options = array())
+	{
+		return $this->input('number', $name, $value, $options);
+	}
+
+	/**
 	 * Create a select box field.
 	 *
 	 * @param  string  $name
@@ -387,7 +418,7 @@ class FormBuilder {
 
 		$options['id'] = $this->getIdAttribute($name, $options);
 
-		$options['name'] = $name;
+		if ( ! isset($options['name'])) $options['name'] = $name;
 
 		// We will simply loop through the options and build an HTML value for each of
 		// them until we have an array of HTML declarations. Then we will join them
@@ -447,15 +478,16 @@ class FormBuilder {
 	 * @param  string  $name
 	 * @param  string  $selected
 	 * @param  array   $options
+	 * @param  string  $format
 	 * @return string
 	 */
-	public function selectMonth($name, $selected = null, $options = array())
+	public function selectMonth($name, $selected = null, $options = array(), $format = '%B')
 	{
 		$months = array();
 
 		foreach (range(1, 12) as $month)
 		{
-			$months[$month] = strftime('%B', mktime(0, 0, 0, $month, 1));
+			$months[$month] = strftime($format, mktime(0, 0, 0, $month, 1));
 		}
 
 		return $this->select($name, $months, $selected, $options);
@@ -469,7 +501,7 @@ class FormBuilder {
 	 * @param  string  $selected
 	 * @return string
 	 */
-	protected function getSelectOption($display, $value, $selected)
+	public function getSelectOption($display, $value, $selected)
 	{
 		if (is_array($display))
 		{
@@ -589,14 +621,14 @@ class FormBuilder {
 	 * @param  string  $name
 	 * @param  mixed   $value
 	 * @param  bool    $checked
-	 * @return void
+	 * @return bool
 	 */
 	protected function getCheckedState($type, $name, $value, $checked)
 	{
 		switch ($type)
 		{
 			case 'checkbox':
-				return $this->getCheckboxCheckedState($name, $checked);
+				return $this->getCheckboxCheckedState($name, $value, $checked);
 
 			case 'radio':
 				return $this->getRadioCheckedState($name, $value, $checked);
@@ -614,13 +646,15 @@ class FormBuilder {
 	 * @param  bool  $checked
 	 * @return bool
 	 */
-	protected function getCheckboxCheckedState($name, $checked)
+	protected function getCheckboxCheckedState($name, $value, $checked)
 	{
-		if ( ! $this->oldInputIsEmpty() and is_null($this->old($name))) return false;
+		if (isset($this->session) && ! $this->oldInputIsEmpty() && is_null($this->old($name))) return false;
 
 		if ($this->missingOldAndModel($name)) return $checked;
 
-		return (bool) $this->getValueAttribute($name);
+		$posted = $this->getValueAttribute($name);
+
+		return is_array($posted) ? in_array($value, $posted) : (bool) $posted;
 	}
 
 	/**
@@ -646,7 +680,7 @@ class FormBuilder {
 	 */
 	protected function missingOldAndModel($name)
 	{
-		return (is_null($this->old($name)) and is_null($this->getModelValueAttribute($name)));
+		return (is_null($this->old($name)) && is_null($this->getModelValueAttribute($name)));
 	}
 
 	/**
@@ -697,24 +731,12 @@ class FormBuilder {
 	 */
 	public function button($value = null, $options = array())
 	{
-		if ( ! array_key_exists('type', $options) )
+		if ( ! array_key_exists('type', $options))
 		{
 			$options['type'] = 'button';
 		}
 
 		return '<button'.$this->html->attributes($options).'>'.$value.'</button>';
-	}
-
-	/**
-	 * Register a custom form macro.
-	 *
-	 * @param  string    $name
-	 * @param  callable  $macro
-	 * @return void
-	 */
-	public function macro($name, $macro)
-	{
-		$this->macros[$name] = $macro;
 	}
 
 	/**
@@ -846,7 +868,7 @@ class FormBuilder {
 	 * @param  array   $attributes
 	 * @return string
 	 */
-	protected function getIdAttribute($name, $attributes)
+	public function getIdAttribute($name, $attributes)
 	{
 		if (array_key_exists('id', $attributes))
 		{
@@ -870,14 +892,14 @@ class FormBuilder {
 	{
 		if (is_null($name)) return $value;
 
-		if (isset($this->session) and $this->session->hasOldInput($name))
+		if ( ! is_null($this->old($name)))
 		{
-			return $this->session->getOldInput($name);
+			return $this->old($name);
 		}
 
 		if ( ! is_null($value)) return $value;
 
-		if (isset($this->model) and isset($this->model[$name]))
+		if (isset($this->model))
 		{
 			return $this->getModelValueAttribute($name);
 		}
@@ -893,11 +915,11 @@ class FormBuilder {
 	{
 		if (is_object($this->model))
 		{
-			return object_get($this->model, $name);
+			return object_get($this->model, $this->transformKey($name));
 		}
 		elseif (is_array($this->model))
 		{
-			return array_get($this->model, $name);
+			return array_get($this->model, $this->transformKey($name));
 		}
 	}
 
@@ -911,7 +933,7 @@ class FormBuilder {
 	{
 		if (isset($this->session))
 		{
-			return $this->session->getOldInput($name);
+			return $this->session->getOldInput($this->transformKey($name));
 		}
 	}
 
@@ -922,7 +944,18 @@ class FormBuilder {
 	 */
 	public function oldInputIsEmpty()
 	{
-		return (isset($this->session) and count($this->session->getOldInput()) == 0);
+		return (isset($this->session) && count($this->session->getOldInput()) == 0);
+	}
+
+	/**
+	 * Transform key from array to dot syntax.
+	 *
+	 * @param  string  $key
+	 * @return string
+	 */
+	protected function transformKey($key)
+	{
+		return str_replace(array('.', '[]', '[', ']'), array('_', '', '.', ''), $key);
 	}
 
 	/**
@@ -939,30 +972,13 @@ class FormBuilder {
 	 * Set the session store implementation.
 	 *
 	 * @param  \Illuminate\Session\Store  $session
-	 * @return \Illuminate\Html\FormBuilder
+	 * @return $this
 	 */
 	public function setSessionStore(Session $session)
 	{
 		$this->session = $session;
 
 		return $this;
-	}
-
-	/**
-	 * Dynamically handle calls to the form builder.
-	 *
-	 * @param  string  $method
-	 * @param  array   $parameters
-	 * @return mixed
-	 */
-	public function __call($method, $parameters)
-	{
-		if (isset($this->macros[$method]))
-		{
-			return call_user_func_array($this->macros[$method], $parameters);
-		}
-
-		throw new \BadMethodCallException("Method {$method} does not exist.");
 	}
 
 }
