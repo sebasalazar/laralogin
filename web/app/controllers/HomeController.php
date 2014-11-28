@@ -24,8 +24,8 @@ class HomeController extends BaseController {
         // Contamos Agrupados
         $grupo = DB::table('usuarios')
                 ->join('accesos', 'usuarios.pk', '=', 'accesos.usuario_fk')
-                ->select(DB::raw('usuarios.nombre, count(*) as total'))
-                ->groupBy('usuarios.nombre')
+                ->select(DB::raw('usuarios.rut, count(*) as total'))
+                ->groupBy('usuarios.rut')
                 ->get();
 
         return View::make('home')->with('data', $data)->with('grupo', $grupo);

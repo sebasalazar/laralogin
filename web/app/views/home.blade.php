@@ -18,7 +18,7 @@
         <tbody>
             @foreach ($grupo as $fila)
             <tr>
-                <td>{{ $fila->nombre }}</td>
+                <td>{{ \App\RutUtils::formatear( $fila->rut ) }}</td>
                 <td>{{ $fila->total }}</td>
             </tr>
             @endforeach
@@ -33,7 +33,6 @@
     <table>
         <thead>
             <tr>
-                <th>Nombre</th>
                 <th>Rut</th>
                 <th>Fecha</th>
                 <th>IP</th>
@@ -42,7 +41,6 @@
         <tbody>
             @foreach ($data as $fila)
             <tr>
-                <td>{{ $fila->nombre }}</td>
                 <td>{{ \App\RutUtils::formatear( $fila->rut ) }}</td>
                 <td>{{ $fila->fecha }}</td>
                 <td>{{ $fila->ip }}</td>
