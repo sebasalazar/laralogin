@@ -65,14 +65,14 @@ class WSUserService extends AuthServiceProvider {
                 $rut = \App\RutUtils::rut($username);
                 \Log::info("Rut: $username / $rut");
                 $usuario = \App\Modelo\Usuario::where('rut', '=', $rut)->first();
-                if (!($usuario instanceof \App\Modelo\Usuario)) {
+                if ($usuario instanceof \App\Modelo\Usuario) {
+                    \Log::info("Usuario encontrado: {$usuario->rut}");
+                } else {
                     \Log::warning("Usuario no encontrado -> se creará uno");
                     $usuario = new \App\Modelo\Usuario();
                     $usuario->rut = $rut;
                     $usuario->nombre = "";
                     $usuario->save();
-                } else {
-                    \Log::info("Usuario encontrado: {$usuario->rut}");
                 }
 
                 $ip = \Request::getClientIp();

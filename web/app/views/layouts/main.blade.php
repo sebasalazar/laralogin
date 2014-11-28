@@ -1,109 +1,83 @@
-<?php ?>
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
     <head>
-        <meta charset="UTF-8">
-        <title>Prueba de Laravel :: Sebastián Salazar Molina.</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Prueba, Laravel, UTEM, Ingeniería, Software">
+        <meta name="author" content="Sebastián Salazar Molina">
+        <!--<link rel="icon" href="../../favicon.ico">-->
 
-        <style>
-            @import url(//fonts.googleapis.com/css?family=Lato:300,400,700);
+        <title>Ejemplo Laravel</title>
 
-            body {
-                margin:0;
-                font-family:'Lato', sans-serif;
-                text-align:center;
-                color: #999;
-            }
+        <!-- Bootstrap core CSS -->
+        <?php echo HTML::style('bootstrap/css/bootstrap.min.css'); ?>
 
-            .welcome {
-                width: 300px;
-                height: 300px;
-                position: absolute;
-                left: 50%;
-                top: 50%; 
-                margin-left: -150px;
-                margin-top: -150px;
-            }
+        <!-- Custom styles for this template -->
+        <?php echo HTML::style('css/navbar.css'); ?>
 
-            a, a:visited {
-                color:#FF5949;
-                text-decoration:none;
-            }
+        <?php echo HTML::script('js/jquery-1.11.1.min.js'); ?>
 
-            a:hover {
-                text-decoration:underline;
-            }
+        <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+        <!--[if lt IE 9]><?php echo HTML::script('js/ie8-responsive-file-warning.js'); ?><![endif]-->
+        <?php echo HTML::script('js/ie-emulation-modes-warning.js'); ?>
 
-            ul li {
-                display:inline;
-                margin:0 1.2em;
-            }
-
-            p {
-                margin:2em 0;
-                color:#555;
-            }
-            
-            table {
-                border: 1px solid #e3e3e3;
-                background-color: #f2f2f2;
-                width: 100%;
-                border-radius: 6px;
-                -webkit-border-radius: 6px;
-                -moz-border-radius: 6px;
-            }
-
-            table td, table th {
-                padding: 5px;
-                color: #333;
-            }
-            
-            table thead {
-                font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-                padding: .2em 0 .2em .5em;
-                text-align: left;
-                color: #4B4B4B;
-                background-color: #C8C8C8;
-                background-image: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#e3e3e3), color-stop(.6,#B3B3B3));
-                background-image: -moz-linear-gradient(top, #D6D6D6, #B0B0B0, #B3B3B3 90%);
-                border-bottom: solid 1px #999;
-            }
-
-            table th {
-                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                font-size: 17px;
-                line-height: 20px;
-                font-style: normal;
-                font-weight: normal;
-                text-align: left;
-                text-shadow: white 1px 1px 1px;
-            }
-
-            table td {
-                line-height: 20px;
-                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                font-size: 14px;
-                border-bottom: 1px solid #fff;
-                border-top: 1px solid #fff;
-            }
-            
-            table td:hover {
-                background-color: #fff;
-            }
-        </style>
-
-        <?php echo HTML::script('js/jquery-1.10.2.min.js'); ?>
-        <?php echo HTML::script('js/jquery.Rut.min.js'); ?>
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
     </head>
+
     <body>
-        <div class="welcome">
-        </div>
-        <div>
-            @yield('contenido')
-        </div>
+
+        <div class="container">
+
+            <!-- Static navbar -->
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#" target="_blank">Ejemplo Laravel</a>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li <?php if (Request::is('codigo')) { echo 'class="active"'; } ?>><a href="https://github.com/sebasalazar/laralogin" target="_blank">Código</a></li>
+                            <?php 
+                            if(Auth::check()) {
+                                ?>
+                                <li <?php if (Request::is('home')) { echo 'class="active"'; } ?>><a href="home">Home</a></li>
+                                <li <?php if (Request::is('logout')) { echo 'class="active"'; } ?>><a href="logout">Cerrar Sesión</a></li>
+                            <?php
+                            } else {
+                                ?>
+                                <li <?php if (Request::is('login')) { echo 'class="active"'; } ?>><a href="login">Login</a></li>
+                                <?php
+                            }
+                            ?>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="active"><a href="#">Sebastián Salazar Molina.</a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div><!--/.container-fluid -->
+            </nav>
+
+            <!-- Main component for a primary marketing message or call to action -->
+            <div class="jumbotron">
+                <div>
+                    @yield('contenido')
+                </div>
+            </div>
+
+        </div> <!-- /container -->
+
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
+        <?php echo HTML::script('bootstrap/js/bootstrap.min.js'); ?>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <?php echo HTML::script('js/ie10-viewport-bug-workaround.js'); ?>
     </body>
 </html>
-
-<?php
-?>

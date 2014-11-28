@@ -16,10 +16,12 @@
 <p>{{ Form::label('password', 'Password') }}</p>
 <p>{{ Form::password('password') }}</p>
 
-<p>{{ Form::submit('Login') }}</p>
+<p>{{ Form::submit('Login', array('class' => 'btn btn-lg btn-primary')) }}</p>
 
 {{ Form::close() }}
 
+
+<?php echo HTML::script('js/jquery.Rut.min.js'); ?>
 <script type="text/javascript">
     jQuery(document).ready(function($) {
         $("#rut").Rut();
