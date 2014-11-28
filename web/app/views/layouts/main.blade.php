@@ -15,6 +15,7 @@
 
         <!-- Custom styles for this template -->
         <?php echo HTML::style('css/navbar.css'); ?>
+        <?php echo HTML::style('css/tabla.css'); ?>
 
         <?php echo HTML::script('js/jquery-1.11.1.min.js'); ?>
 
